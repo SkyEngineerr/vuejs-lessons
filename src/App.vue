@@ -2,17 +2,29 @@
   <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-                <h1>Transitions</h1>
-                <hr>
-                <button class="btn btn-primary" @click="show = !show">Show Alert</button>
+                <h1>Http</h1>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" class="form-control" v-model="user.username">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" class="form-control" v-model="user.email">
+                </div>
+                <button class="btn btn-primary" @click="submit">
+                    Submit
+                </button>
+                <br>
+                <br>
+                <input type="text" class="form-control" v-model="node">
+                <br>
+                <button class="btn btn-primary" @click="fetchData">
+                    Get Data
+                </button>
                 <br><br>
-                <transition name="fade">  
-                    <div class="alert alert-info" v-if="show">This is some Info</div>
-                </transition>
-                <transition name="slide" type="animation">  
-                    <div class="alert alert-info" v-if="show">This is some Info</div>
-                </transition>
-                
+                <ul class="list-group">
+                    <li class="list-group-item" v-for="u in users">{{u.username}} - {{u.email}}</li>
+                </ul>
             </div>
         </div>
   </div>
@@ -21,64 +33,65 @@
 <script>
 
 export default {
-  
   data () {
       return{
-        show: false,
+        user:{
+            username: '',
+            email: ''
+        },
+        users: [],
+        resource:{},
+        node: 'data'    
       }
-  }
+  },
+  methods:{
+      submit(){
+        //   this.$http.post('data.json', this.user)
+        //         .then(response => {
+        //             console.log(response);
+        //         }, error => {
+        //             console.log(error);
+        //         });
+        // this.resource.save({},this.user);
+        this.resource.saveAlt(this.user)
+      },
+      fetchData(){
+        //   this.$http.get('data.json')
+        //         .then(response=>{
+        //             return response.json();
+        //         })
+        //         .then(data=> {
+        //             const resultArray = []
+        //             for(let key in data){
+        //                 resultArray.push(data[key]);
+        //             }
+        //             this.users = resultArray
+        //         })
+        this.resource.getData({node: this.node})
+                .then(response=>{
+                    return response.json();
+                })
+                .then(data=> {
+                    const resultArray = []
+                    for(let key in data){
+                        resultArray.push(data[key]);
+                    }
+                    this.users = resultArray
+                })
+      },
+      
+  },
+  created(){
+          const customActions = {
+             saveAlt: {method: 'POST', url: 'alternative.json'},
+             getData: {method: 'GET'}
+          };
+          this.resource = this.$resource('{node}.json', {}, customActions);
+      }
 }  
   
 </script>
 
 <style>
- .fade-enter{
-     opacity: 0;
- }
 
- .fade-enter-active{
-     transition: opacity 1s;
- }
-
- .fade-leave{
-
- }
-
- .fade-leave-active{
-     transition: opacity 1s;
-     opacity: 0;
- }
-
- .slide-enter{
-     opacity: 0;
-     /* transform: translateY(20px); */
- }
- .slide-enter-active{
-     animation: slide-in 1s ease-out forwards;
-     transition: opacity .5s;;
- }
- .slide-leave{
-     
- }
- .slide-leave-active{
-    animation: slide-out 1s ease-in-out forwards;
-    transition: opacity 3s;
-    opacity: 0;
- }
- @keyframes slide-in{
-     from{
-         transform: translateY(20px);
-     }
-     to{
-         transform: translateY(0);
-     }
- }
- @keyframes slide-out{
-     from{
-         transform: translateY(0);
-     }
-     to{
-         transform: translateY(20px);
-     }
- }
 </style>

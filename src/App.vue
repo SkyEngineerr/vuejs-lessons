@@ -7,7 +7,7 @@
                 
                 <router-view name="header-top"></router-view>
                 <transition name="slide">
-                     <router-view></router-view>
+                     <router-view>Eren</router-view>
                 </transition>
                 <router-view name="header-bottom"></router-view>
                 

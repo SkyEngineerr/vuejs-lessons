@@ -41,14 +41,14 @@ export default {
 
  } */
 
- .fade-leave-active{
+ /* .fade-leave-active{
      transition: opacity 1s;
      opacity: 0;
  }
 
  .slide-enter{
      opacity: 0;
-     /* transform: translateY(20px); */
+     
  }
  .slide-enter-active{
      animation: slide-in 1s ease-out forwards;
@@ -77,5 +77,5 @@ export default {
      to{
          transform: translateY(20px);
      }
- }
+ } */
 </style>
